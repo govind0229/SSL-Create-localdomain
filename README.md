@@ -193,65 +193,7 @@ Data Base Updated
 CA verifying: 192.168.0.12.crt <-> CA cert
 192.168.0.12.crt: OK
 
-
-
-
-6. Package the user certificate into a single pkcs12 file.
-
-
-
-# ./p12.sh 
-Usage: ./p12.sh user@email.address.com
-# ./p12.sh yeak@192.168.0.12
-Enter Export Password:
-Verifying password - Enter Export Password:
-
-The certificate for yeak@192.168.0.12 has been collected into a pkcs12 file.
-You can download to your browser and import it.
-
-
-
-7. DONE!
-
-
-
-PROBLEM SOLVING
----------------
-I am sure you have problem to even using the script. Yes, I actually need
-to improve them first. But see the following first (I know, I know...)
-
-Q. "openssl" not found?
-
-A. You need to have openssl 0.9.4 in your machine. For Red Hat Linux, just
-   install the openssl-xxxx.rpm package. On Solaris, make sure your PATH
-   environment is set correctly. In my case, I have openssl installed in
-   /usr/local/ssl/bin/openssl. So I need to make sure my PATH contain
-   "/usr/local/ssl/bin" and export the this PATH variable.
-
-Q. warning, not much extra random data, consider using the -rand option
-   14044:error:20.......................... PRNG not seeded:md_rand.c
-
-A. In openssl 0.9.5a version, the random seed (PRNG) is important in order to
-   generate any private key. This is a security feature, not a bug. In
-   my kit, I actually include the random-bits that I make up. Do not simply
-   use it! You should try to modify the "new-root-ca.sh" file, look for
-   "-rand random-bits", change it to "-rand /var/adm/wtmpx:/var/adm/messages"
-   in order to get your own unique seed. Note, once you successfully make
-   the openssl run, it will create a $HOME/.rnd file for future use.
-
-   In Linux, you can use "-rand /dev/urandom". If you use
-   "-rand /dev/random", be sure to patiently wait until it start to generate
-   something... :-)
-
-Q. where should I install ssl.ca directory?
-
-A. You can put anywhere. I put inside /usr/local/apache/conf where I have
-   ssl.key, ssl.crt, ssl.csr... around.
-
-Q. I can't important the p12 files to my Mac or PC!
-
-A. Make sure the file is downloaded as "binary". Windows NT 4 might have
-   problem to read the key. Try Windows 2000 or Windows 98.
+DONE!
 
 
 TODO
