@@ -190,7 +190,7 @@ Signature ok
 The Subjects Distinguished Name is as follows
 commonName            :PRINTABLE:'IN'
 emailAddress          :IA5STRING:'CA-IN'
-Certificate is to be certified until Apr 24 12:53:58 2001 GMT (365 days)
+Certificate is to be certified until Apr 24 12:53:58 2021 GMT (365 days)
 Sign the certificate? [y/n]:y
 
 
