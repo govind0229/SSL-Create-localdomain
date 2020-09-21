@@ -1,9 +1,23 @@
 # SSL-Create-localdomain
 SSL certifiates create for local server
 
+
 CHANGES
 -------
-v0.3	21 Aug 2020, Google browser support Initial public release.
+v0.3	21 Aug 2020, Google browser suppot Initial public release.
+
+This README file will explain how to use this handy "kit" to get your
+certificate creation and signing task easier using openssl. You can also
+modify the scripts to suit your needs.
+
+This scripts are particularly designed to handle the web server cert
+generation and user cert generation (S/MIME). Then the script let you
+package the certs into pkcs12 format for you to download to your Netscape
+Communicator to use.
+
+Most of the codes are borrowed from RSE's Mod-SSL package. I only "extend"
+it and probably make it easier to use.
+
 
 Introduction
 ------------
@@ -106,7 +120,7 @@ Locality Name (eg, city) [Sitiawan]:
 Organization Name (eg, company) [My Directory Sdn Bhd]:
 Organizational Unit Name (eg, section) [Certification Services Division]:
 Common Name (eg, MD Root CA) []:MD Root CA
-Email Address []:md-ca@md.com.my
+Email Address []:Default@default.com
 
 
 
@@ -115,8 +129,8 @@ Email Address []:md-ca@md.com.my
 
 # ./new-server-cert.sh 
 Usage: ./new-server-cert.sh <www.domain.com>
-# ./new-server-cert.sh www.md.com.my
-No www.md.com.my.key round. Generating one
+# ./new-server-cert.sh 192.168.0.12
+No 192.168.0.12.key round. Generating one
 Generating RSA private key, 1024 bit long modulus
 ...++++++
 ......++++++
@@ -136,10 +150,10 @@ State or Province Name (full name) [Perak]:
 Locality Name (eg, city) [Sitiawan]:
 Organization Name (eg, company) [My Directory Sdn Bhd]:
 Organizational Unit Name (eg, section) [Secure Web Server]:
-Common Name (eg, www.domain.com) []:www.md.com.my
-Email Address []:info@md.com.my
+Common Name (eg, www.domain.com) []:192.168.0.12
+Email Address []:NA
 
-You may now run ./sign-server-cert.sh to get it signed
+You may now run ./sign-server-cert.sh 192.168.0.12 to get it signed
 
 
 
@@ -148,20 +162,20 @@ You may now run ./sign-server-cert.sh to get it signed
 
 # ./sign-server-cert.sh 
 Usage: ./sign-server-cert.sh <www.domain.com>
-# ./sign-server-cert.sh www.md.com.my
-CA signing: www.md.com.my.csr -> www.md.com.my.crt:
+# ./sign-server-cert.sh 192.168.0.12
+CA signing: 192.168.0.12.csr -> 192.168.0.12.crt:
 Using configuration from ca.config
 Enter PEM pass phrase:
 Check that the request matches the signature
 Signature ok
 The Subjects Distinguished Name is as follows
-countryName           :PRINTABLE:'MY'
-stateOrProvinceName   :PRINTABLE:'Perak'
-localityName          :PRINTABLE:'Sitiawan'
-organizationName      :PRINTABLE:'My Directory Sdn Bhd'
-organizationalUnitName:PRINTABLE:'Secure Web Server'
-commonName            :PRINTABLE:'www.md.com.my'
-emailAddress          :IA5STRING:'info@md.com.my'
+countryName           :PRINTABLE:'IN'
+stateOrProvinceName   :PRINTABLE:'MU'
+localityName          :PRINTABLE:'Mumbai'
+organizationName      :PRINTABLE:'Your company name'
+organizationalUnitName:PRINTABLE:'Your company unit name'
+commonName            :PRINTABLE:'192.168.0.12'
+emailAddress          :IA5STRING:'NA'
 Certificate is to be certified until Apr 24 12:43:27 2001 GMT (365 days)
 Sign the certificate? [y/n]:y
 
@@ -169,8 +183,8 @@ Sign the certificate? [y/n]:y
 1 out of 1 certificate requests certified, commit? [y/n]y
 Write out database with 1 new entries
 Data Base Updated
-CA verifying: www.md.com.my.crt <-> CA cert
-www.md.com.my.crt: OK
+CA verifying: 192.168.0.12.crt <-> CA cert
+192.168.0.12.crt: OK
 
 
 
@@ -179,8 +193,8 @@ www.md.com.my.crt: OK
 
 # ./new-user-cert.sh 
 Usage: ./new-user-cert.sh user@email.address.com
-# ./new-user-cert.sh yeak@md.com.my
-No yeak@md.com.my.key round. Generating one
+# ./new-user-cert.sh 192.168.0.12
+No 192.168.0.12.key round. Generating one
 Generating RSA private key, 1024 bit long modulus
 ....................++++++
 ............++++++
@@ -195,10 +209,10 @@ There are quite a few fields but you can leave some blank
 For some fields there will be a default value,
 If you enter '.', the field will be left blank.
 -----
-Common Name (eg, John Doe) []:Yeak Nai Siew    
-Email Address []:yeak@md.com.my
+Common Name (eg, John Doe) []:IN    
+Email Address []:NA
 
-You may now run ./sign-user-cert.sh to get it signed
+You may now run ./sign-user-cert.sh 192.168.0.12 to get it signed
 
 
 
@@ -207,15 +221,15 @@ You may now run ./sign-user-cert.sh to get it signed
 
 # ./sign-user-cert.sh     
 Usage: ./sign-user-cert.sh user@email.address.com
-# ./sign-user-cert.sh yeak@md.com.my
-CA signing: yeak@md.com.my.csr -> yeak@md.com.my.crt:
+# ./sign-user-cert.sh 192.168.0.12
+CA signing: 192.168.0.12.csr -> 192.168.0.12.crt:
 Using configuration from ca.config
 Enter PEM pass phrase:
 Check that the request matches the signature
 Signature ok
 The Subjects Distinguished Name is as follows
-commonName            :PRINTABLE:'Yeak Nai Siew'
-emailAddress          :IA5STRING:'yeak@md.com.my'
+commonName            :PRINTABLE:'IN'
+emailAddress          :IA5STRING:'CA-IN'
 Certificate is to be certified until Apr 24 12:53:58 2001 GMT (365 days)
 Sign the certificate? [y/n]:y
 
@@ -223,8 +237,8 @@ Sign the certificate? [y/n]:y
 1 out of 1 certificate requests certified, commit? [y/n]y
 Write out database with 1 new entries
 Data Base Updated
-CA verifying: yeak@md.com.my.crt <-> CA cert
-yeak@md.com.my.crt: OK
+CA verifying: 192.168.0.12.crt <-> CA cert
+192.168.0.12.crt: OK
 
 
 
@@ -235,11 +249,11 @@ yeak@md.com.my.crt: OK
 
 # ./p12.sh 
 Usage: ./p12.sh user@email.address.com
-# ./p12.sh yeak@md.com.my
+# ./p12.sh yeak@192.168.0.12
 Enter Export Password:
 Verifying password - Enter Export Password:
 
-The certificate for yeak@md.com.my has been collected into a pkcs12 file.
+The certificate for yeak@192.168.0.12 has been collected into a pkcs12 file.
 You can download to your browser and import it.
 
 
@@ -291,3 +305,4 @@ TODO
 ----
 Web based certificate management. Need a lot of input from all of you out
 there.
+
